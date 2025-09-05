@@ -57,68 +57,61 @@ def students(request):
 
 def student_detail(request, student_id):
     data = load_data()
-
-    # Normalize IDs so everything is an int
-    for student in data.get("students", []):
-        student["id"] = int(student["id"])
-        student["courses"] = [int(c) for c in student.get("courses", [])]
-
-    for course in data.get("courses", []):
-        course["id"] = int(course["id"])
-        course["students"] = [int(sid) for sid in course.get("students", [])]
-
     students = data.get("students", [])
     courses = data.get("courses", [])
 
-    # Find the student
     student_id = int(student_id)
     student = next((s for s in students if s["id"] == student_id), None)
+
     if not student:
         return redirect("students")
+    
+   
+
+    # Make sure courses list is int
+    student["courses"] = [int(c) for c in student.get("courses", [])]
 
     if request.method == "POST":
+        
+        print("posting")
         action = request.POST.get("action")
-        course_id = request.POST.get("course_id")
+        course_id = int(request.POST.get("course_id"))
+        
+        print("DEBUG: action =", action, "course_id =", request.POST.get("course_id"))
 
-        if not course_id:
-            return redirect("student_detail", student_id=student_id)
-
-        course_id = int(course_id)
-
-        print("DEBUG POST:", request.POST) 
-        print("DEBUG Student before:", student)
-
-        # --- ENROLL ---
         if action == "enroll" and course_id not in student["courses"]:
             student["courses"].append(course_id)
+            
+
             for course in courses:
                 if course["id"] == course_id:
+                    course.setdefault("students", [])
                     if student["id"] not in course["students"]:
                         course["students"].append(student["id"])
 
-        # --- REMOVE ---
         elif action == "remove" and course_id in student["courses"]:
             student["courses"].remove(course_id)
+
             for course in courses:
                 if course["id"] == course_id:
+                    course.setdefault("students", [])
                     course["students"] = [
                         sid for sid in course["students"] if sid != student["id"]
                     ]
 
-        # Save updates
+        # Save after updates
         data["students"] = students
         data["courses"] = courses
+        print(data)
         save_data(data)
 
-        print("DEBUG Student after:", student)
+        return redirect("students")
 
-        return redirect("student_detail", student_id=student_id)
-
-    return render(
-        request,
-        "individualStudent.html",
-        {"student": student, "courses": courses, "student_courses": student["courses"],},
-    )
+    return render(request, "individualStudent.html", {
+        "student": student,
+        "courses": courses,
+        "student_courses": student["courses"],
+    })
 
 
 

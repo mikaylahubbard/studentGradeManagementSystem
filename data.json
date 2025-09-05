@@ -1,21 +1,25 @@
 {
     "students": [
         {
-            "id": 2,
-            "name": "test 2",
-            "courses": []
-        },
-        {
-            "id": 3,
-            "name": "test 3",
-            "courses": []
-        },
-        {
-            "id": 4,
-            "name": "Test 4",
+            "id": 5,
+            "name": "me",
             "courses": [
+                2,
+                4
+            ]
+        },
+        {
+            "id": 6,
+            "name": "mikayla",
+            "courses": [
+                3,
                 2
             ]
+        },
+        {
+            "id": 7,
+            "name": "iggy",
+            "courses": []
         }
     ],
     "courses": [
@@ -23,7 +27,24 @@
             "id": 2,
             "name": "Software Engineering",
             "students": [
-                4
+                5,
+                6
+            ],
+            "grades": []
+        },
+        {
+            "id": 3,
+            "name": "Cyber",
+            "students": [
+                6
+            ],
+            "grades": []
+        },
+        {
+            "id": 4,
+            "name": "Biomechanics",
+            "students": [
+                5
             ],
             "grades": []
         }

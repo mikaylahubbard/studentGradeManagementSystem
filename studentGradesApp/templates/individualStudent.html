@@ -25,14 +25,17 @@
       <li
         class="list-group-item d-flex justify-content-between align-items-center"
       >
-        {{ course.name }} {% comment %}
-        <form method="post" style="margin: 0">
+        {{ course.name }}
+        <form
+          method="post"
+          style="margin: 0"
+          action="{% url 'student_detail' student.id %}"
+        >
           {% csrf_token %}
           <input type="hidden" name="course_id" value="{{ course.id }}" />
           <input type="hidden" name="action" value="remove" />
           <button type="submit" class="btn btn-sm btn-danger">Remove</button>
         </form>
-        {% endcomment %}
       </li>
       {% endif %} {% endfor %} {% if not student_courses %}
       <li class="list-group-item">Not enrolled in any courses</li>
@@ -40,7 +43,11 @@
     </ul>
 
     <h3>Enroll in a Course</h3>
-    <form method="post" class="row g-3 justify-content-center">
+    <form
+      method="post"
+      class="row g-3 justify-content-center"
+      action="{% url 'student_detail' student.id %}"
+    >
       {% csrf_token %}
       <input type="hidden" name="action" value="enroll" />
       <div class="col-auto">

@@ -16,6 +16,7 @@ urlpatterns = [
    path("students/remove_s/", views.remove_student, name="remove_student"),
    path("students/remove_c/", views.remove_course, name="remove_course"),
     path("students/<int:student_id>/", views.student_detail, name="student_detail"),
+    
 ] 
 
 #  Serve media files if DEBUG is True (development mode)
