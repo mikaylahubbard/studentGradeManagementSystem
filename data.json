@@ -4,8 +4,7 @@
             "id": 5,
             "name": "me",
             "courses": [
-                2,
-                4
+                2
             ]
         },
         {
@@ -13,13 +12,21 @@
             "name": "mikayla",
             "courses": [
                 3,
-                2
+                2,
+                5
             ]
         },
         {
             "id": 7,
             "name": "iggy",
             "courses": []
+        },
+        {
+            "id": 8,
+            "name": "you",
+            "courses": [
+                3
+            ]
         }
     ],
     "courses": [
@@ -36,15 +43,22 @@
             "id": 3,
             "name": "Cyber",
             "students": [
-                6
+                6,
+                8
             ],
             "grades": []
         },
         {
             "id": 4,
             "name": "Biomechanics",
+            "students": [],
+            "grades": []
+        },
+        {
+            "id": 5,
+            "name": "Music",
             "students": [
-                5
+                6
             ],
             "grades": []
         }
