@@ -1,0 +1,31 @@
+{
+    "students": [
+        {
+            "id": 2,
+            "name": "test 2",
+            "courses": []
+        },
+        {
+            "id": 3,
+            "name": "test 3",
+            "courses": []
+        },
+        {
+            "id": 4,
+            "name": "Test 4",
+            "courses": [
+                2
+            ]
+        }
+    ],
+    "courses": [
+        {
+            "id": 2,
+            "name": "Software Engineering",
+            "students": [
+                4
+            ],
+            "grades": []
+        }
+    ]
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Bootstrap 5-->
+    <!-- Latest compiled and minified CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Students</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <!--Navbar -->
+    <div class="container">
+      <header class="d-flex justify-content-center py-3">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a href="/" class="nav-link" aria-current="page">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="/courses/" class="nav-link">All Courses</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link active">All Students</a>
+          </li>
+        </ul>
+      </header>
+    </div>
+    <div class="px-4 py-5 my-5 text-center">
+      <h1 class="display-5 fw-bold">All Students</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">A list of all the students in your courses</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <!-- Add Student Button (triggers modal) -->
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-lg"
+            data-bs-toggle="modal"
+            data-bs-target="#addStudentModal"
+          >
+            Add Student
+          </button>
+
+          <!-- Add Student Modal -->
+          <div
+            class="modal fade"
+            id="addStudentModal"
+            tabindex="-1"
+            aria-labelledby="addStudentModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addStudentModalLabel">
+                    Add Student
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form method="post">
+                    {% csrf_token %} {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Remove Student Button (triggers modal) -->
+    <button type="button" class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#removeStudentModal">
+      Remove Student
+    </button>
+
+    <!-- Remove Student Modal -->
+    <div class="modal fade" id="removeStudentModal" tabindex="-1" aria-labelledby="removeStudentModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="removeStudentModalLabel">Remove Student</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="{% url 'remove_student' %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="student_id" class="form-label">Select Student</label>
+                <select name="student_id" id="student_id" class="form-select" required>
+                  <option value="">-- Choose a student --</option>
+                  {% for student in students %}
+                    <option value="{{ student.id }}">{{ student.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <button type="submit" class="btn btn-danger">Remove</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- list of students -->
+   <div class="container">
+    <div class="py-5">
+  
+      <ul class="list-group list-group-flush">
+        {% for student in students %}
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          {{ student.name }}
+            <pre>
+  Student object: {{ student|safe }}
+</pre>
+           <button class="btn btn-sm btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#studentDetailModal"
+              data-student-url="{% url 'student_detail' student.id %}">
+        View
+      </button>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted">No students added yet.</li>
+        {% endfor %}
+      </ul>
+
+      <!-- Modal for student view -->
+<!-- Modal -->
+<div class="modal fade" id="studentDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <!-- Modal header with close button -->
+      <div class="modal-header">
+        <h5 class="modal-title">Student Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Student detail will load here -->
+        <div id="studentDetailContent">Loading...</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Updates the modal for the individual student view-->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const studentModal = document.getElementById("studentDetailModal");
+      const modalContent = document.getElementById("studentDetailContent");
+
+      studentModal.addEventListener("show.bs.modal", function (event) {
+        const button = event.relatedTarget; // the button that opened the modal
+        const url = button.getAttribute("data-student-url");
+
+        // Fetch the student detail HTML
+        fetch(url)
+          .then(response => response.text())
+          .then(html => {
+            modalContent.innerHTML = html;
+          });
+      });
+    });
+</script>
+  </body>
+</html>
