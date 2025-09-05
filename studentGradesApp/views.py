@@ -9,9 +9,6 @@ import random
 # from django.template import loader
 
 def home(request):
-    context = {
-        
-    }
     return render(request, 'index.html', context)
 
 def students(request):
